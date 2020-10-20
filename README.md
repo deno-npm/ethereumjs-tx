@@ -20,7 +20,7 @@ import {
   Transaction as EthereumTx
 } from "https://deno.land/x/npm_ethereumjs_tx@0.0.1/mod.ts";
 // NEVER use unversioned imports
-import Buffer from "https://deno.land/std/node/buffer.ts";
+import Buffer from "https://deno.land/std@0.74.0/node/buffer.ts";
 
 const privateKey = Buffer.from(
   'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',

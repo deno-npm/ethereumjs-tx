@@ -1,21 +1,25 @@
-import { Buffer, Common } from '../deps.js'
+import { Buffer, Common } from "../deps.js";
 
 /**
  * Any object that can be transformed into a `Buffer`
  */
 export interface TransformableToBuffer {
-  toBuffer(): Buffer
+  toBuffer(): Buffer;
 }
 
 /**
  * A hex string prefixed with `0x`.
  */
-export type PrefixedHexString = string
+export type PrefixedHexString = string;
 
 /**
  * A Buffer, hex string prefixed with `0x`, Number, or an object with a toBuffer method such as BN.
  */
-export type BufferLike = Buffer | TransformableToBuffer | PrefixedHexString | number
+export type BufferLike =
+  | Buffer
+  | TransformableToBuffer
+  | PrefixedHexString
+  | number;
 
 /**
  * A transaction's data.
@@ -24,47 +28,47 @@ export interface TxData {
   /**
    * The transaction's gas limit.
    */
-  gasLimit?: BufferLike
+  gasLimit?: BufferLike;
 
   /**
    * The transaction's gas price.
    */
-  gasPrice?: BufferLike
+  gasPrice?: BufferLike;
 
   /**
    * The transaction's the address is sent to.
    */
-  to?: BufferLike
+  to?: BufferLike;
 
   /**
    * The transaction's nonce.
    */
-  nonce?: BufferLike
+  nonce?: BufferLike;
 
   /**
    * This will contain the data of the message or the init of a contract
    */
-  data?: BufferLike
+  data?: BufferLike;
 
   /**
    * EC recovery ID.
    */
-  v?: BufferLike
+  v?: BufferLike;
 
   /**
    * EC signature parameter.
    */
-  r?: BufferLike
+  r?: BufferLike;
 
   /**
    * EC signature parameter.
    */
-  s?: BufferLike
+  s?: BufferLike;
 
   /**
    * The amount of Ether sent.
    */
-  value?: BufferLike
+  value?: BufferLike;
 }
 
 /**
@@ -74,7 +78,7 @@ export interface FakeTxData extends TxData {
   /**
    * The sender of the Tx.
    */
-  from?: BufferLike
+  from?: BufferLike;
 }
 
 /**
@@ -85,15 +89,15 @@ export interface TransactionOptions {
   /**
    * A Common object defining the chain and the hardfork a transaction belongs to.
    */
-  common?: Common
+  common?: Common;
 
   /**
    * The chain of the transaction, default: 'mainnet'
    */
-  chain?: number | string
+  chain?: number | string;
 
   /**
    * The hardfork of the transaction, default: 'petersburg'
    */
-  hardfork?: string
+  hardfork?: string;
 }

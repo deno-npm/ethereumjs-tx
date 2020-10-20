@@ -1,23 +1,19 @@
-import { Transaction } from '../mod.ts'
-import {
-  Buffer,
-  Common,
-  util,
-} from "../deps.js";
+import { Transaction } from "../mod.ts";
+import { Buffer, Common, util } from "../deps.js";
 
 // In this example we create a transaction for a custom network.
 //
 // All of these network's params are the same than mainnets', except for name, chainId, and
 // networkId, so we use the Common.forCustomChain method.
 const customCommon = Common.forCustomChain(
-  'mainnet',
+  "mainnet",
   {
-    name: 'my-network',
+    name: "my-network",
     networkId: 123,
     chainId: 2134,
   },
-  'petersburg',
-)
+  "petersburg",
+);
 
 // We pass our custom Common object whenever we create a transaction
 
@@ -29,25 +25,26 @@ const tx = new Transaction(
     value: 100000,
   },
   { common: customCommon },
-)
+);
 
 // Once we created the transaction using the custom Common object, we can use it as a normal tx.
 
 // Here we sign it and validate its signature
 const privateKey = Buffer.from(
-  'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
-  'hex',
-)
+  "e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109",
+  "hex",
+);
 
-tx.sign(privateKey)
+tx.sign(privateKey);
 
 if (
   tx.validate() &&
-  util.bufferToHex(tx.getSenderAddress()) === util.bufferToHex(util.privateToAddress(privateKey))
+  util.bufferToHex(tx.getSenderAddress()) ===
+    util.bufferToHex(util.privateToAddress(privateKey))
 ) {
-  console.log('Valid signature')
+  console.log("Valid signature");
 } else {
-  console.log('Invalid signature')
+  console.log("Invalid signature");
 }
 
-console.log("The transaction's chain id is", tx.getChainId())
+console.log("The transaction's chain id is", tx.getChainId());

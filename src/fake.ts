@@ -1,11 +1,13 @@
+import { Buffer, util } from "../deps.js";
 import {
-  Buffer,
-  util,
-} from "../deps.js"
-import { BufferLike, FakeTxData, PrefixedHexString, TransactionOptions } from './types.ts'
-import Transaction from './transaction.ts'
+  BufferLike,
+  FakeTxData,
+  PrefixedHexString,
+  TransactionOptions,
+} from "./types.ts";
+import Transaction from "./transaction.ts";
 
-const {toBuffer} = util;
+const { toBuffer } = util;
 
 /**
  * Creates a new transaction object that doesn't need to be signed.
@@ -23,28 +25,28 @@ export default class FakeTransaction extends Transaction {
    * Set from address to bypass transaction signing.
    * This is not an optional property, as its getter never returns undefined.
    */
-  public from!: Buffer
+  public from!: Buffer;
 
   constructor(
     data: Buffer | PrefixedHexString | BufferLike[] | FakeTxData = {},
     opts: TransactionOptions = {},
   ) {
-    super(data, opts)
+    super(data, opts);
 
-    Object.defineProperty(this, 'from', {
+    Object.defineProperty(this, "from", {
       enumerable: true,
       configurable: true,
       get: () => this.getSenderAddress(),
-      set: val => {
+      set: (val) => {
         if (val) {
-          this._from = toBuffer(val)
+          this._from = toBuffer(val);
         }
       },
-    })
+    });
 
-    const txData = data as FakeTxData
+    const txData = data as FakeTxData;
     if (txData.from) {
-      this.from = toBuffer(txData.from)
+      this.from = toBuffer(txData.from);
     }
   }
 
@@ -55,12 +57,12 @@ export default class FakeTransaction extends Transaction {
    * @param includeSignature - Whether or not to include the signature
    */
   hash(includeSignature = true): Buffer {
-    if (includeSignature && this._from && this._from.toString('hex') !== '') {
+    if (includeSignature && this._from && this._from.toString("hex") !== "") {
       // include a fake signature using the from address as a private key
-      const fakeKey = Buffer.concat([this._from, this._from.slice(0, 12)])
-      this.sign(fakeKey)
+      const fakeKey = Buffer.concat([this._from, this._from.slice(0, 12)]);
+      this.sign(fakeKey);
     }
 
-    return super.hash(includeSignature)
+    return super.hash(includeSignature);
   }
 }

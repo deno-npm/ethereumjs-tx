@@ -1,6 +1,9 @@
-import { Transaction } from '../src'
-import Common from 'ethereumjs-common'
-import { bufferToHex, privateToAddress } from 'ethereumjs-util'
+import { Transaction } from '../mod.ts'
+import {
+  Buffer,
+  Common,
+  util,
+} from "../deps.js";
 
 // In this example we create a transaction for a custom network.
 //
@@ -31,7 +34,7 @@ const tx = new Transaction(
 // Once we created the transaction using the custom Common object, we can use it as a normal tx.
 
 // Here we sign it and validate its signature
-const privateKey = new Buffer(
+const privateKey = Buffer.from(
   'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
   'hex',
 )
@@ -40,7 +43,7 @@ tx.sign(privateKey)
 
 if (
   tx.validate() &&
-  bufferToHex(tx.getSenderAddress()) === bufferToHex(privateToAddress(privateKey))
+  util.bufferToHex(tx.getSenderAddress()) === util.bufferToHex(util.privateToAddress(privateKey))
 ) {
   console.log('Valid signature')
 } else {

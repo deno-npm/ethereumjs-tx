@@ -11,16 +11,17 @@
 [![Coverage Status](https://img.shields.io/coveralls/ethereumjs/ethereumjs-tx.svg?style=flat-square)](https://coveralls.io/r/ethereumjs/ethereumjs-tx)
 [![Gitter](https://img.shields.io/gitter/room/ethereum/ethereumjs-lib.svg?style=flat-square)](https://gitter.im/ethereum/ethereumjs-lib) or #ethereumjs on freenode
 
-# INSTALL
-
-`npm install ethereumjs-tx`
-
 # USAGE
 
-- [example](https://github.com/ethereumjs/ethereumjs-tx/blob/master/examples/transactions.ts)
+- [example](https://deno.land/x/npm_ethereumjs_tx/examples/transactions.ts)
 
 ```javascript
-const EthereumTx = require('ethereumjs-tx').Transaction
+import {
+  Transaction as EthereumTx
+} from "https://deno.land/x/npm_ethereumjs_tx@0.0.1/mod.ts";
+// NEVER use unversioned imports
+import Buffer from "https://deno.land/std/node/buffer.ts";
+
 const privateKey = Buffer.from(
   'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
   'hex',
@@ -49,7 +50,7 @@ to be used. By default, `mainnet` and `petersburg` will be used.
 There are two ways of customizing these. The first one, as shown in the previous section, is by
 using an object with `chain` and `hardfork` names. You can see en example of this in [./examples/ropsten-tx.ts](./examples/ropsten-tx.ts).
 
-The second option is by passing the option `common` set to an instance of [ethereumjs-common](https://github.com/ethereumjs/ethereumjs-common)' Common. This is specially useful for custom networks or chains/hardforks not yet supported by `ethereumjs-common`. You can see en example of this in [./examples/custom-chain-tx.ts](./examples/custom-chain-tx.ts).
+The second option is by passing the option `common` set to an instance of [ethereumjs-common](https://cdn.skypack.dev/ethereumjs-common@1.5.2?dts)' Common. This is specially useful for custom networks or chains/hardforks not yet supported by `ethereumjs-common`. You can see en example of this in [./examples/custom-chain-tx.ts](./examples/custom-chain-tx.ts).
 
 ## MuirGlacier Support
 
@@ -70,7 +71,9 @@ hardfork in the `Transaction`'s constructor.
 
 [./docs/](./docs/README.md)
 
-# EthereumJS
+# About
+
+Based on the terrific work by EthereumJS
 
 See our organizational [documentation](https://ethereumjs.readthedocs.io) for an introduction to `EthereumJS` as well as information on current standards and best practices.
 

@@ -1,7 +1,11 @@
-import { toBuffer } from 'ethereumjs-util'
-import { Buffer } from 'buffer'
-import { BufferLike, FakeTxData, PrefixedHexString, TransactionOptions } from './types'
-import Transaction from './transaction'
+import {
+  Buffer,
+  util,
+} from "../deps.js"
+import { BufferLike, FakeTxData, PrefixedHexString, TransactionOptions } from './types.ts'
+import Transaction from './transaction.ts'
+
+const {toBuffer} = util;
 
 /**
  * Creates a new transaction object that doesn't need to be signed.

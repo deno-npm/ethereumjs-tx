@@ -1,4 +1,11 @@
 import {
+  Buffer,
+  Common,
+  util,
+} from '../deps.js';
+import { BufferLike, PrefixedHexString, TxData, TransactionOptions } from './types.ts';
+
+const {
   BN,
   defineProperties,
   bufferToInt,
@@ -8,11 +15,8 @@ import {
   ecsign,
   toBuffer,
   rlp,
-  stripZeros,
-} from 'ethereumjs-util'
-import Common from 'ethereumjs-common'
-import { Buffer } from 'buffer'
-import { BufferLike, PrefixedHexString, TxData, TransactionOptions } from './types'
+  unpadBuffer,
+} = util;
 
 // secp256k1n/2
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16)
@@ -174,7 +178,7 @@ export default class Transaction {
    * Computes a sha3-256 hash of the serialized tx
    * @param includeSignature - Whether or not to include the signature
    */
-  hash(includeSignature: boolean = true): Buffer {
+  hash(includeSignature = true): Buffer {
     let items
     if (includeSignature) {
       items = this.raw
@@ -184,8 +188,8 @@ export default class Transaction {
           ...this.raw.slice(0, 6),
           toBuffer(this.getChainId()),
           // TODO: stripping zeros should probably be a responsibility of the rlp module
-          stripZeros(toBuffer(0)),
-          stripZeros(toBuffer(0)),
+          unpadBuffer(toBuffer(0)),
+          unpadBuffer(toBuffer(0)),
         ]
       } else {
         items = this.raw.slice(0, 6)
@@ -279,7 +283,7 @@ export default class Transaction {
   /**
    * The amount of gas paid for the data in this tx
    */
-  getDataFee(): BN {
+  getDataFee(): util.BN {
     const data = this.raw[5]
     const cost = new BN(0)
     for (let i = 0; i < data.length; i++) {
@@ -293,7 +297,7 @@ export default class Transaction {
   /**
    * the minimum amount of gas the tx must have (DataFee + TxFee + Creation Fee)
    */
-  getBaseFee(): BN {
+  getBaseFee(): util.BN {
     const fee = this.getDataFee().iaddn(this._common.param('gasPrices', 'tx'))
     if (this._common.gteHardfork('homestead') && this.toCreationAddress()) {
       fee.iaddn(this._common.param('gasPrices', 'txCreation'))
@@ -304,7 +308,7 @@ export default class Transaction {
   /**
    * the up front amount that an account must have for this transaction to be valid
    */
-  getUpfrontCost(): BN {
+  getUpfrontCost(): util.BN {
     return new BN(this.gasLimit).imul(new BN(this.gasPrice)).iadd(new BN(this.value))
   }
 
@@ -314,7 +318,7 @@ export default class Transaction {
   validate(): boolean
   validate(stringError: false): boolean
   validate(stringError: true): string
-  validate(stringError: boolean = false): boolean | string {
+  validate(stringError = false): boolean | string {
     const errors = []
     if (!this.verifySignature()) {
       errors.push('Invalid Signature')
@@ -343,7 +347,7 @@ export default class Transaction {
    * Returns the transaction in JSON format
    * @see {@link https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#defineproperties|ethereumjs-util}
    */
-  toJSON(labels: boolean = false): { [key: string]: string } | string[] {
+  toJSON(labels = false): { [key: string]: string } | string[] {
     // Note: This never gets executed, defineProperties overwrites it.
     return {}
   }
@@ -364,7 +368,7 @@ export default class Transaction {
     }
 
     const isValidEIP155V =
-      vInt === this.getChainId() * 2 + 35 || vInt === this.getChainId() * 2 + 36
+      vInt === this.getChainId() * 2 + 35 || vInt === this.getChainId() * 2 + 36;
 
     if (!isValidEIP155V) {
       throw new Error(

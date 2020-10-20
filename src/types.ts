@@ -1,5 +1,4 @@
-import { Buffer } from 'buffer'
-import Common from 'ethereumjs-common'
+import { Buffer, Common } from '../deps.js'
 
 /**
  * Any object that can be transformed into a `Buffer`

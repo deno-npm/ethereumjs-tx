@@ -1,7 +1,8 @@
 // This files contain examples on how to use this module. You can run them with ts-node, as this
 // project is developed in typescript. Install the dependencies and run `npx ts-node examples/transactions.ts`
 
-import { Transaction } from '../src'
+import { Transaction } from '../mod.ts'
+import { Buffer } from "../deps.js"
 
 // We create an unsigned transaction.
 // Notice we don't set the `to` field because we are creating a new contract.
@@ -16,7 +17,7 @@ const tx = new Transaction({
 })
 
 // We sign the transaction with this private key
-const privateKey = new Buffer(
+const privateKey = Buffer.from(
   'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
   'hex',
 )
